@@ -15,8 +15,8 @@ function App() {
         <Nav />
 
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/books" element={<Books books={books} />} />
+          <Route path="/" exact element={<Home />} />
+          <Route path="/books" exact element={<Books books={books} />} />
           <Route path="/books/:id" element={<BookInfo books={books} />} />
         </Routes>
 
