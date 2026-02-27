@@ -6,7 +6,7 @@ import Price from './Price';
 
 const Book = ({ book }) => {
 
-  const [img, setImg] = useState();
+  const [img, setImg] = useState(null);
 
   const mountedRef = useRef(true);
 
@@ -15,7 +15,7 @@ const Book = ({ book }) => {
     image.src = book.url;
     image.onload = () => {
       setTimeout(() => {
-        if (mountedRef.current) {
+        if (mountedRef) {
           setImg(image);
         }
       }, 300);
@@ -23,8 +23,8 @@ const Book = ({ book }) => {
 
     return () => {
       mountedRef.current = false;
-    };
-  });
+    }
+  })
   
   return (
     <div className="book">
