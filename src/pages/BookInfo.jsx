@@ -1,13 +1,21 @@
 import { Link, useParams } from 'react-router-dom';
-import React from'react'
+import React, { useState } from'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Rating from '../components/ui/Rating';
 import Price from '../components/ui/Price';
 import Book from '../components/ui/Book';
 
-const BookInfo = ({ books }) => {
+const BookInfo = ({ books, addToCart, cart }) => {
   const { id } = useParams();
-  const book = books.find(book => +book.id === +(id));
+  const book = books.find((book) => +book.id === +id);
+
+  function addBookToCart(book) {
+    addToCart(book);
+  }
+
+  function bookExistsOnCart() {
+    return cart.find(book => book.id === +id);
+  }
 
   if (!book) return <h1>Book not found</h1>;
 
@@ -23,34 +31,40 @@ const BookInfo = ({ books }) => {
               <Link to="/books" className="book__link">
                 <h2 className="book__selected--title--top">Books</h2>
               </Link>
-              <div className="book__selected">
-                <figure className="book__selected--figure">
-                  <img 
-                    className="book__selected--img" 
-                    src={book.url}
-                    alt="" />
-                </figure>
-                <div className="book__selected--description">
-                  <h2 className="book_selected--title">{book.title}</h2>
-                  <Rating rating={book.rating} />
-                  <div className="book_selected--price">
-                    <Price originalPrice={book.originalPrice} salePrice={book.salePrice} />
-                  </div>
-                  <div className="book__summary">
-                    <h3 className="book__summary--title">
-                      Summary
-                    </h3>
-                    <p className="book__summary--para">
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vitae iste facere necessitatibus mollitia dolorum similique, at, delectus exercitationem excepturi repudiandae perspiciatis. Assumenda unde deserunt tempore magnam odio officiis aut rem.
-                    </p>
-                    <p className="book__summary--para">
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vitae iste facere necessitatibus mollitia dolorum similique, at, delectus exercitationem excepturi repudiandae perspiciatis. Assumenda unde deserunt tempore magnam odio officiis aut rem.
-                    </p>
-                    <button className="btn">
-                      Add to cart
-                    </button>
-                  </div>
+            </div>
+            <div className="book__selected">
+              <figure className="book__selected--figure">
+                <img 
+                  className="book__selected--img" 
+                  src={book.url}
+                  alt="" />
+              </figure>
+              <div className="book__selected--description">
+                <h2 className="book_selected--title">{book.title}</h2>
+                <Rating rating={book.rating} />
+                <div className="book_selected--price">
+                  <Price originalPrice={book.originalPrice} salePrice={book.salePrice} />
                 </div>
+                <div className="book__summary">
+                  <h3 className="book__summary--title">
+                    Summary
+                  </h3>
+                  <p className="book__summary--para">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vitae iste facere necessitatibus mollitia dolorum similique, at, delectus exercitationem excepturi repudiandae perspiciatis. Assumenda unde deserunt tempore magnam odio officiis aut rem.
+                  </p>
+                  <p className="book__summary--para">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vitae iste facere necessitatibus mollitia dolorum similique, at, delectus exercitationem excepturi repudiandae perspiciatis. Assumenda unde deserunt tempore magnam odio officiis aut rem.
+                  </p>
+                </div>
+                { bookExistsOnCart() ? (
+                  <Link to={`/cart`} className="book__link">
+                    <button className="btn">Checkout</button>
+                  </Link>
+                 ) : (
+                  <button className="btn" onClick={() => addBookToCart(book)} >
+                    Add to cart
+                  </button>
+                  )}
               </div>
             </div>
 
